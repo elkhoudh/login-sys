@@ -70,10 +70,26 @@ class SignIn extends React.Component {
     this.setState({ isLoading: true });
     axios
       .post(`${URL}/register`, this.state)
-      .then(res => this.setState({ result: res.data, isLoading: false }))
+      .then(res =>
+        this.setState({
+          result: res.data,
+          isLoading: false,
+          firstname: "",
+          lastname: "",
+          username: "",
+          password: ""
+        })
+      )
       .catch(err =>
         this.setState(
-          { error: err.response.data.message, isLoading: false },
+          {
+            error: err.response.data.message,
+            isLoading: false,
+            firstname: "",
+            lastname: "",
+            username: "",
+            password: ""
+          },
           () => console.log(this.state)
         )
       );

@@ -175,7 +175,7 @@ class SignIn extends React.Component {
                 color="primary"
                 className={classes.submit}
               >
-                Sign in
+                Register
               </Button>
             </form>
           </Paper>

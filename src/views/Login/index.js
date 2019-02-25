@@ -142,9 +142,11 @@ class SignIn extends React.Component {
                   {this.state.error.response.data.message}
                 </small>
               )}
-              <Link className={classes.registerLink} to="/register">
-                Don't Have an Account? Sign Up
-              </Link>
+              <Typography component="h6" variant="h6">
+                <Link className={classes.registerLink} to="/register">
+                  Don't Have an Account? Sign Up
+                </Link>
+              </Typography>
               <Button
                 type="submit"
                 fullWidth

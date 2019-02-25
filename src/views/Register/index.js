@@ -165,9 +165,12 @@ class SignIn extends React.Component {
                   {this.state.error}
                 </small>
               )}
-              <Link className={classes.registerLink} to="/login">
-                Already have an account? Sign in
-              </Link>
+              <Typography component="h6" variant="h6">
+                <Link className={classes.registerLink} to="/login">
+                  Already have an account? Sign in
+                </Link>
+              </Typography>
+
               <Button
                 type="submit"
                 fullWidth

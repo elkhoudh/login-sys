@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import Loader from "../../components/Loader";
-
+import { Link } from "react-router-dom";
 const styles = theme => ({
   main: {
     width: "auto",
@@ -45,6 +45,11 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3
+  },
+  registerLink: {
+    textDecoration: "none",
+    display: "block",
+    padding: "20px 0"
   }
 });
 
@@ -109,7 +114,7 @@ class SignIn extends React.Component {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign Up
             </Typography>
             <form className={classes.form} onSubmit={this.registerUser}>
               <FormControl margin="normal" required fullWidth>
@@ -156,6 +161,9 @@ class SignIn extends React.Component {
                   {this.state.error}
                 </small>
               )}
+              <Link className={classes.registerLink} to="/login">
+                Already have an account? Sign in
+              </Link>
               <Button
                 type="submit"
                 fullWidth

@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import Loader from "../../components/Loader";
-
+import { Link } from "react-router-dom";
 const styles = theme => ({
   main: {
     width: "auto",
@@ -45,6 +45,11 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3
+  },
+  registerLink: {
+    textDecoration: "none",
+    display: "block",
+    padding: "20px 0"
   }
 });
 
@@ -135,6 +140,9 @@ class SignIn extends React.Component {
                   {this.state.error}
                 </small>
               )}
+              <Link className={classes.registerLink} to="/register">
+                Don't Have an Account? Sign Up
+              </Link>
               <Button
                 type="submit"
                 fullWidth

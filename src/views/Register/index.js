@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
+import Loader from "../../components/Loader";
 
 const styles = theme => ({
   main: {
@@ -55,7 +56,9 @@ class SignIn extends React.Component {
     lastname: "",
     username: "",
     password: "",
-    result: {}
+    result: {},
+    isLoading: false,
+    error: ""
   };
 
   handleChange = e => {
@@ -64,10 +67,16 @@ class SignIn extends React.Component {
 
   registerUser = e => {
     e.preventDefault();
+    this.setState({ isLoading: true });
     axios
       .post(`${URL}/register`, this.state)
-      .then(res => this.setState({ result: res.data }))
-      .catch(err => this.setState({ result: err }));
+      .then(res => this.setState({ result: res.data, isLoading: false }))
+      .catch(err =>
+        this.setState(
+          { error: err.response.data.message, isLoading: false },
+          () => console.log(this.state)
+        )
+      );
   };
   render() {
     const { classes, history } = this.props;
@@ -75,67 +84,75 @@ class SignIn extends React.Component {
       history.push("/login");
     }
     return (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} onSubmit={this.registerUser}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="firstname">First Name</InputLabel>
-              <Input
-                id="firstname"
-                name="firstname"
-                autoComplete="firstname"
-                autoFocus
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="lastname">Last Name</InputLabel>
-              <Input
-                id="lastname"
-                name="lastname"
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="username">Username</InputLabel>
-              <Input
-                id="username"
-                name="username"
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
+      <>
+        {this.state.isLoading && <Loader />}
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
               Sign in
-            </Button>
-          </form>
-        </Paper>
-      </main>
+            </Typography>
+            <form className={classes.form} onSubmit={this.registerUser}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="firstname">First Name</InputLabel>
+                <Input
+                  id="firstname"
+                  name="firstname"
+                  autoComplete="firstname"
+                  autoFocus
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="lastname">Last Name</InputLabel>
+                <Input
+                  id="lastname"
+                  name="lastname"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="username">Username</InputLabel>
+                <Input
+                  id="username"
+                  name="username"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  id="password"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              {this.state.error && (
+                <small style={{ color: "red", display: "block" }}>
+                  {this.state.error}
+                </small>
+              )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in
+              </Button>
+            </form>
+          </Paper>
+        </main>
+      </>
     );
   }
 }

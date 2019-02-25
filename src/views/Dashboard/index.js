@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import NavBar from "../../components/NavBar";
 import axios from "axios";
-
+import Loader from "../../components/Loader";
 const URL = "https://authlambda.herokuapp.com/api";
 const styles = theme => ({
   root: {
@@ -38,18 +38,20 @@ const styles = theme => ({
 class Dashboard extends React.Component {
   state = {
     users: [],
-    error: {}
+    error: {},
+    isLoading: false
   };
 
   componentDidMount = () => {
+    this.setState({ isLoading: true });
     axios
       .get(`${URL}/users`, {
         headers: {
           Authorization: window.localStorage.token
         }
       })
-      .then(res => this.setState({ users: res.data }))
-      .catch(error => this.setState({ error }));
+      .then(res => this.setState({ users: res.data, isLoading: false }))
+      .catch(error => this.setState({ error, isLoading: false }));
   };
 
   render() {
@@ -61,6 +63,7 @@ class Dashboard extends React.Component {
     return (
       <>
         <NavBar history={this.props.history} />
+        {this.state.isLoading && <Loader />}
         <Grid container className={classes.root} spacing={16}>
           <Grid item xs={12}>
             <Grid

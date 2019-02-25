@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
+import Loader from "../../components/Loader";
 
 const styles = theme => ({
   main: {
@@ -54,7 +55,8 @@ class SignIn extends React.Component {
     username: "",
     password: "",
     result: {},
-    error: {}
+    error: "",
+    isLoading: false
   };
 
   handleChange = e => {
@@ -63,10 +65,13 @@ class SignIn extends React.Component {
 
   loginUser = e => {
     e.preventDefault();
+    this.setState({ isLoading: true });
     axios
       .post(`${URL}/login`, this.state)
-      .then(res => this.setState({ result: res.data }))
-      .catch(error => this.setState({ error }));
+      .then(res => this.setState({ result: res.data, isLoading: false }))
+      .catch(error =>
+        this.setState({ error: error.response.data.message, isLoading: false })
+      );
   };
   render() {
     const { classes } = this.props;
@@ -77,50 +82,58 @@ class SignIn extends React.Component {
       this.props.history.push("/");
     }
     return (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} onSubmit={this.loginUser}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="username">Username</InputLabel>
-              <Input
-                id="username"
-                name="username"
-                autoFocus
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                onChange={this.handleChange}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
+      <>
+        {this.state.isLoading && <Loader />}
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
               Sign in
-            </Button>
-          </form>
-        </Paper>
-      </main>
+            </Typography>
+            <form className={classes.form} onSubmit={this.loginUser}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="username">Username</InputLabel>
+                <Input
+                  id="username"
+                  name="username"
+                  autoFocus
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  id="password"
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              {this.state.error && (
+                <small style={{ color: "red", display: "block" }}>
+                  {this.state.error}
+                </small>
+              )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in
+              </Button>
+            </form>
+          </Paper>
+        </main>
+      </>
     );
   }
 }

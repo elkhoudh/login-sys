@@ -123,6 +123,7 @@ class SignIn extends React.Component {
                   id="firstname"
                   name="firstname"
                   autoComplete="firstname"
+                  value={this.state.firstname}
                   autoFocus
                   onChange={this.handleChange}
                 />
@@ -132,6 +133,7 @@ class SignIn extends React.Component {
                 <Input
                   id="lastname"
                   name="lastname"
+                  value={this.state.lastname}
                   onChange={this.handleChange}
                 />
               </FormControl>
@@ -140,6 +142,7 @@ class SignIn extends React.Component {
                 <Input
                   id="username"
                   name="username"
+                  value={this.state.username}
                   onChange={this.handleChange}
                 />
               </FormControl>
@@ -149,6 +152,7 @@ class SignIn extends React.Component {
                   name="password"
                   type="password"
                   id="password"
+                  value={this.state.password}
                   onChange={this.handleChange}
                 />
               </FormControl>

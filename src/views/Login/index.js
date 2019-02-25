@@ -83,7 +83,7 @@ class SignIn extends React.Component {
       )
       .catch(error =>
         this.setState({
-          error: error.response.data.message,
+          error: error,
           isLoading: false,
           firstname: "",
           lastname: "",
@@ -118,6 +118,7 @@ class SignIn extends React.Component {
                 <Input
                   id="username"
                   name="username"
+                  value={this.state.username}
                   autoFocus
                   onChange={this.handleChange}
                 />
@@ -128,6 +129,7 @@ class SignIn extends React.Component {
                   name="password"
                   type="password"
                   id="password"
+                  value={this.state.password}
                   onChange={this.handleChange}
                 />
               </FormControl>
@@ -137,7 +139,7 @@ class SignIn extends React.Component {
               />
               {this.state.error && (
                 <small style={{ color: "red", display: "block" }}>
-                  {this.state.error}
+                  {this.state.error.response.data.message}
                 </small>
               )}
               <Link className={classes.registerLink} to="/register">
